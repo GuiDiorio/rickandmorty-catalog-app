@@ -4,11 +4,11 @@ import { Layout } from "../../app/components";
 import { Stack, Typography } from "@mui/material";
 import Fetcher from "../../app/components/Fetcher";
 
-import * as locationApi from "../utils/api";
+import { list } from "../../app/utils/api";
 
 const LocationPage = () => {
   return (
-    <Fetcher request={() => locationApi.list()}>
+    <Fetcher request={() => list("/location")}>
       {({ data: allLocations }) => (
         <Layout>
           <Typography variant="h1">Locations</Typography>

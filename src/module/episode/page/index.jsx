@@ -1,12 +1,14 @@
 import React from "react";
+
 import { Layout } from "../../app/components";
 import { Stack, Typography } from "@mui/material";
 import Fetcher from "../../app/components/Fetcher";
-import * as episodeApi from "../utils/api";
+
+import { list } from "../../app/utils/api";
 
 const EpisodePage = () => {
   return (
-    <Fetcher request={() => episodeApi.list()}>
+    <Fetcher request={() => list("/episode")}>
       {({ data: allEpisodes }) => (
         <Layout>
           <Typography variant="h1">Episodes</Typography>
