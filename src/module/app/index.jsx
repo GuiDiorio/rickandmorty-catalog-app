@@ -5,17 +5,21 @@ import CharacterRouter from "../character/Router";
 import EpisodeRouter from "../episode/Router";
 import LocationRouter from "../location/Router";
 
+import Theme from "./components/Theme";
+
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/characters/*" index element={<CharacterRouter />} />
-        <Route path="/episodes/*" element={<EpisodeRouter />} />
-        <Route path="/locations/*" element={<LocationRouter />} />
+    <Theme>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/characters/*" index element={<CharacterRouter />} />
+          <Route path="/episodes/*" element={<EpisodeRouter />} />
+          <Route path="/locations/*" element={<LocationRouter />} />
 
-        <Route path="/*" element={<Navigate to="/characters" replace />} />
-      </Routes>
-    </BrowserRouter>
+          <Route path="/*" element={<Navigate to="/characters" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </Theme>
   );
 };
 
