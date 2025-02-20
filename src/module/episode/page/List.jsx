@@ -25,7 +25,11 @@ const List = () => {
               >
                 {allEpisodes.map((episode) => (
                   <Grid size={6} key={episode.id}>
-                    <Card media={episode.image} title={episode.name} />
+                    <Card
+                      media={episode.image}
+                      title={episode.name}
+                      description={episode.episode}
+                    />
                   </Grid>
                 ))}
               </Grid>

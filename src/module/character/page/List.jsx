@@ -18,13 +18,17 @@ const List = () => {
             <Grid size={12}>
               <Grid
                 container
-                direction="row"
+                columnSpacing={2}
                 rowSpacing={5}
                 justifyContent="space-between"
               >
                 {allCharacters.map((character) => (
-                  <Grid size={12} key={character.id}>
-                    <Card media={character.image} title={character.name} />
+                  <Grid size={6} key={character.id}>
+                    <Card
+                      media={character.image}
+                      title={character.name}
+                      description={character.species}
+                    />
                   </Grid>
                 ))}
               </Grid>

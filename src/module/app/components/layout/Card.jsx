@@ -18,10 +18,9 @@ const Card = ({ media, title, description }) => {
           {media && (
             <CardMedia
               component="img"
-              height="200"
+              height="120"
               image={media}
-              alt="green iguana"
-              sx={{ maxWidth: 225 }}
+              sx={{ maxWidth: "120px" }}
             />
           )}
 

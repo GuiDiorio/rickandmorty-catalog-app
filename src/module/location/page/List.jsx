@@ -19,12 +19,17 @@ const List = () => {
               <Grid
                 container
                 direction="row"
+                columnSpacing={2}
                 rowSpacing={5}
                 justifyContent="space-between"
               >
                 {allLocations.map((location) => (
-                  <Grid size={12} key={location.id}>
-                    <Card media={location.image} title={location.name} />
+                  <Grid size={6} key={location.id}>
+                    <Card
+                      media={location.image}
+                      title={location.name}
+                      description={`${location.type}/${location.dimension}`}
+                    />
                   </Grid>
                 ))}
               </Grid>
