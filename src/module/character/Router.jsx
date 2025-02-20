@@ -2,12 +2,13 @@ import React from "react";
 
 import { Routes, Route } from "react-router-dom";
 
-import { List } from "./page";
+import { List, View } from "./page";
 
 const CharacterRouter = () => {
   return (
     <Routes path="/characters">
       <Route index element={<List />} />
+      <Route path=":id" element={<View />} />
     </Routes>
   );
 };

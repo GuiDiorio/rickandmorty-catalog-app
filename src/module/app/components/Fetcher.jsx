@@ -11,7 +11,7 @@ const Fetcher = ({ request, children }) => {
 
     try {
       const dataRequest = await request();
-      setData(dataRequest.results);
+      setData(dataRequest.results || dataRequest);
     } catch (error) {
       console.error(error);
       const status = error?.response?.status;

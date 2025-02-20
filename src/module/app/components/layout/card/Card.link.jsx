@@ -1,5 +1,6 @@
-import * as React from "react";
+import React from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 import {
   Card as MuiCard,
@@ -10,10 +11,10 @@ import {
   Stack,
 } from "@mui/material";
 
-const Card = ({ media, title, description }) => {
+const CardLink = ({ media, title, description, url }) => {
   return (
     <MuiCard>
-      <CardActionArea>
+      <CardActionArea component={Link} to={url}>
         <Stack direction="row">
           {media && (
             <CardMedia
@@ -38,16 +39,18 @@ const Card = ({ media, title, description }) => {
   );
 };
 
-Card.defaultProps = {
+CardLink.defaultProps = {
   media: "",
   title: "",
   description: "",
+  url: "/",
 };
 
-Card.propTypes = {
+CardLink.propTypes = {
   media: PropTypes.string,
   title: PropTypes.string,
   description: PropTypes.string,
+  url: PropTypes.string,
 };
 
-export default Card;
+export default CardLink;

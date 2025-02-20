@@ -24,6 +24,8 @@ const list = async (baseURL) => {
  * @throws {Error} If the API request fails
  */
 const read = async (baseURL, id) => {
+  const url = `${baseURL}/${id}`;
+  console.log(url);
   try {
     const response = await api.get(`${baseURL}/${id}`);
     return response.data;

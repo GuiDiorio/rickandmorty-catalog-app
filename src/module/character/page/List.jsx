@@ -25,6 +25,7 @@ const List = () => {
                 {allCharacters.map((character) => (
                   <Grid size={6} key={character.id}>
                     <Card
+                      variant="default"
                       media={character.image}
                       title={character.name}
                       description={character.species}

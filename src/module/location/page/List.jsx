@@ -26,6 +26,7 @@ const List = () => {
                 {allLocations.map((location) => (
                   <Grid size={6} key={location.id}>
                     <Card
+                      variant="default"
                       media={location.image}
                       title={location.name}
                       description={`${location.type}/${location.dimension}`}
