@@ -9,31 +9,29 @@ import {
   Stack,
 } from "@mui/material";
 
-const CardDefault = ({ media, title, description }) => {
-  return (
-    <MuiCard>
-      <Stack direction="row">
-        {media && (
-          <CardMedia
-            component="img"
-            height="120"
-            image={media}
-            sx={{ maxWidth: "120px" }}
-          />
-        )}
+const CardDefault = ({ media, title, description }) => (
+  <MuiCard>
+    <Stack direction="row">
+      {media && (
+        <CardMedia
+          component="img"
+          height="120"
+          image={media}
+          sx={{ maxWidth: "120px" }}
+        />
+      )}
 
-        <CardContent>
-          <Typography variant="h5" fontWeight={700} component="div">
-            {title}
-          </Typography>
-          <Typography variant="body2" sx={{ color: "text.secondary" }}>
-            {description}
-          </Typography>
-        </CardContent>
-      </Stack>
-    </MuiCard>
-  );
-};
+      <CardContent>
+        <Typography variant="h5" fontWeight={700} component="div">
+          {title}
+        </Typography>
+        <Typography variant="body2" sx={{ color: "text.secondary" }}>
+          {description}
+        </Typography>
+      </CardContent>
+    </Stack>
+  </MuiCard>
+);
 
 CardDefault.defaultProps = {
   media: "",

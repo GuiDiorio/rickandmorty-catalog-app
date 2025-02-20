@@ -60,14 +60,12 @@ const theme = createTheme({
   },
 });
 
-const Theme = ({ children }) => {
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      {children}
-    </ThemeProvider>
-  );
-};
+const Theme = ({ children }) => (
+  <ThemeProvider theme={theme}>
+    <CssBaseline />
+    {children}
+  </ThemeProvider>
+);
 
 Theme.propTypes = {
   children: PropTypes.node.isRequired,
