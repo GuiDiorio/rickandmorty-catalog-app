@@ -4,7 +4,8 @@ import { Fetcher, PageLayout } from "../../app/components";
 import { read } from "../../app/utils/api";
 import { useParams } from "react-router";
 
-import { Grid2 as Grid, Typography } from "@mui/material";
+import { Grid2 as Grid } from "@mui/material";
+import { LocationSpecifications } from "../components";
 
 const View = () => {
   const { id } = useParams();
@@ -13,9 +14,9 @@ const View = () => {
     <Fetcher request={() => read("/location", id)}>
       {({ data: location }) => (
         <PageLayout>
-          <Grid container spacing={4} direction="row">
+          <Grid container direction="row" spacing={4}>
             <Grid size={12}>
-              <Typography variant="h1">{location.name}</Typography>
+              <LocationSpecifications location={location} />
             </Grid>
           </Grid>
         </PageLayout>
