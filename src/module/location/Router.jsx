@@ -1,12 +1,12 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
-import LocationPage from "./page";
+import { List } from "./page";
 
 const LocationRouter = () => {
   return (
     <Routes path="/locations">
-      <Route index element={<LocationPage />} />
+      <Route index element={<List />} />
     </Routes>
   );
 };

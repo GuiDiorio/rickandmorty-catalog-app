@@ -1,11 +1,12 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import EpisodePage from "./page";
+
+import { List } from "./page";
 
 const EpisodeRouter = () => {
   return (
     <Routes path="/episodes">
-      <Route index element={<EpisodePage />} />
+      <Route index element={<List />} />
     </Routes>
   );
 };

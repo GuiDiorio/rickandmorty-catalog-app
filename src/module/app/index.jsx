@@ -4,8 +4,7 @@ import { Routes, Route, Navigate, BrowserRouter } from "react-router-dom";
 import CharacterRouter from "../character/Router";
 import EpisodeRouter from "../episode/Router";
 import LocationRouter from "../location/Router";
-
-import Theme from "./components/Theme";
+import { Theme } from "./components";
 
 const App = () => {
   return (

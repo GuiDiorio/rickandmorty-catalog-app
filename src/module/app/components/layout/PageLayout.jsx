@@ -2,11 +2,11 @@ import React from "react";
 
 import { Grid2 as Grid, Container } from "@mui/material";
 import PropTypes from "prop-types";
-import { Header } from "./index";
+import Header from "./Header";
 
-const Layout = ({ children }) => {
+const PageLayout = ({ children }) => {
   return (
-    <Grid container direction="column" minHeight="100%" rowSpacing={8} pb={8}>
+    <Grid container direction="row" minHeight="100%" rowSpacing={8} pb={8}>
       <Grid item size={12}>
         <Header />
       </Grid>
@@ -18,12 +18,12 @@ const Layout = ({ children }) => {
   );
 };
 
-Layout.defaultProps = {
+PageLayout.defaultProps = {
   children: undefined,
 };
 
-Layout.propTypes = {
+PageLayout.propTypes = {
   children: PropTypes.node,
 };
 
-export default Layout;
+export default PageLayout;
