@@ -1,7 +1,6 @@
-import { Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 
-const Fetcher = ({ request, children }) => {
+const useFetch = (request) => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
@@ -27,17 +26,14 @@ const Fetcher = ({ request, children }) => {
   useEffect(() => {
     if (!isLoading) setIsLoading(true);
     fetchData();
-  }, [request]);
+  }, []);
 
-  console.log(data);
-
-  const refresh = fetchData;
-
-  if (isLoading) return <Typography>Loading...</Typography>;
-
-  if (notFound) return <Typography>Not found</Typography>;
-
-  return data ? children({ data, refresh }) : <></>;
+  return {
+    data,
+    isLoading,
+    notFound,
+    refresh: fetchData,
+  };
 };
 
-export default Fetcher;
+export default useFetch;

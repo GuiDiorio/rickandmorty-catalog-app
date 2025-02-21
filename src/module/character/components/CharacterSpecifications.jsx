@@ -7,29 +7,29 @@ import { Card } from "../../app/components";
 const CharacterSpecifications = ({ character }) => (
   <Stack direction="column" spacing={4}>
     <Box>
-      <Typography variant="h2">{character.name}</Typography>
-      <Typography>ID: ({character.id})</Typography>
+      <Typography variant="h2">{character?.name}</Typography>
+      <Typography>ID: ({character?.id})</Typography>
     </Box>
 
     <Grid container direction="row" spacing={4}>
       <Grid size={4}>
-        <Card title="Species" description={character.species} />
+        <Card title="Species" description={character?.species} />
       </Grid>
 
       <Grid size={4}>
-        <Card title="Gender" description={character.gender} />
+        <Card title="Gender" description={character?.gender} />
       </Grid>
 
       <Grid size={4}>
-        <Card title="Status" description={character.status} />
+        <Card title="Status" description={character?.status} />
       </Grid>
 
       <Grid size={4}>
-        <Card title="Origin" description={character.origin.name} />
+        <Card title="Origin" description={character?.origin?.name} />
       </Grid>
 
       <Grid size={4}>
-        <Card title="Location" description={character.location.name} />
+        <Card title="Location" description={character?.location?.name} />
       </Grid>
     </Grid>
   </Stack>

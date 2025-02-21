@@ -6,16 +6,16 @@ import { Card } from "../../app/components";
 const LocationSpecifications = ({ location }) => (
   <Stack direction="column" spacing={4}>
     <Box>
-      <Typography variant="h2">{location.name}</Typography>
-      <Typography>ID: ({location.id})</Typography>
+      <Typography variant="h2">{location?.name}</Typography>
+      <Typography>ID: ({location?.id})</Typography>
     </Box>
 
     <Grid container direction="row" spacing={4}>
       <Grid size={4}>
-        <Card title="Type" description={location.type} />
+        <Card title="Type" description={location?.type} />
       </Grid>
       <Grid size={4}>
-        <Card title="Dimension" description={location.dimension} />
+        <Card title="Dimension" description={location?.dimension} />
       </Grid>
     </Grid>
   </Stack>
