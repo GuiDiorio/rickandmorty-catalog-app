@@ -1,4 +1,5 @@
 import Theme from "./Theme";
-import { PageLayout, Card } from "./layout";
+import { Icon } from "./display";
+import { Card, PageLayout } from "./layout";
 
-export { Theme, PageLayout, Card };
+export { Card, Icon, PageLayout, Theme };
