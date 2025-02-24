@@ -1,40 +1,24 @@
-import React from "react";
 import PropTypes from "prop-types";
+import React from "react";
 import { Link } from "react-router-dom";
 
 import {
-  Card as MuiCard,
-  CardContent,
-  CardMedia,
-  Typography,
   CardActionArea,
-  Stack,
+  Card as MuiCard,
+  Stack
 } from "@mui/material";
+import Card from ".";
+
+
 
 const CardLink = ({ media, title, description, url }) => (
-  <MuiCard>
+  
     <CardActionArea component={Link} to={url}>
       <Stack direction="row">
-        {media && (
-          <CardMedia
-            component="img"
-            height="120"
-            image={media}
-            sx={{ maxWidth: "120px" }}
-          />
-        )}
-
-        <CardContent>
-          <Typography variant="h5" fontWeight={700} component="div">
-            {title}
-          </Typography>
-          <Typography variant="body2" sx={{ color: "text.secondary" }}>
-            {description}
-          </Typography>
-        </CardContent>
+        <Card sx={{ width: "100%" }} variant="default" media={media} title={title} description={description} />
       </Stack>
     </CardActionArea>
-  </MuiCard>
+  
 );
 
 CardLink.defaultProps = {

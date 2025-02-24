@@ -10,8 +10,20 @@ const PageLayout = ({ children }) => (
       <Header />
     </Grid>
 
-    <Grid size={12} sx={{ flexGrow: 1 }}>
-      <Container>{children}</Container>
+    <Grid size={12} sx={{ 
+      flexGrow: 1,
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column'
+    }}>
+      <Container sx={{ 
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        flexGrow: 1
+      }}>
+        {children}
+      </Container>
     </Grid>
   </Grid>
 );

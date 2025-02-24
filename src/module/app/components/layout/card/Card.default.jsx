@@ -9,8 +9,8 @@ import {
   Stack,
 } from "@mui/material";
 
-const CardDefault = ({ media, title, description }) => (
-  <MuiCard>
+const CardDefault = ({ media, title, description, ...props }) => (
+  <MuiCard {...props}>
     <Stack direction="row">
       {media && (
         <CardMedia
