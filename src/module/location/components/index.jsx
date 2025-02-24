@@ -1,3 +1,4 @@
+import LocationList from "./LocationList";
 import LocationSpecifications from "./LocationSpecifications";
 
-export { LocationSpecifications };
+export { LocationList, LocationSpecifications };

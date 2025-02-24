@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const useFetch = (request) => {
   const [data, setData] = useState(null);
@@ -10,7 +10,7 @@ const useFetch = (request) => {
 
     try {
       const dataRequest = await request();
-      setData(dataRequest.results || dataRequest);
+      setData(dataRequest?.results || dataRequest);
     } catch (error) {
       console.error(error);
       const status = error?.response?.status;

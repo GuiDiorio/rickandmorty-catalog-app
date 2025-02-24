@@ -1,3 +1,4 @@
+import EpisodeList from "./EpisodeList";
 import EpisodeSpecifications from "./EpisodeSpecifications";
 
-export { EpisodeSpecifications };
+export { EpisodeList, EpisodeSpecifications };

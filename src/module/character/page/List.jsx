@@ -1,14 +1,16 @@
-import {
-  Grid2 as Grid,
-  Stack,
-  Typography
-} from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { ButtonMenu, Card, PageLayout } from "../../app/components";
+import { ButtonMenu, PageLayout } from "../../app/components";
 
 import { useFetch } from "../../app/hooks";
 import { list } from "../../app/utils/api";
-import { filterCharacters, getAllGenders, getAllSpecies, getAllStatus } from "../utils/filters";
+import { CharacterList } from "../components";
+import {
+  filterCharacters,
+  getAllGenders,
+  getAllSpecies,
+  getAllStatus,
+} from "../utils/filters";
 
 const List = () => {
   const [allCharacters, setAllCharacters] = useState([]);
@@ -16,11 +18,7 @@ const List = () => {
   const [selectedGenders, setSelectedGenders] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState([]);
 
-  const {
-    data,
-    isLoading,
-    notFound,
-  } = useFetch(() => list("/character"));
+  const { data, isLoading, notFound } = useFetch(() => list("/character"));
 
   useEffect(() => {
     if (data) {
@@ -80,24 +78,7 @@ const List = () => {
           </Stack>
         </Stack>
 
-        <Grid
-          container
-          columnSpacing={2}
-          rowSpacing={5}
-          justifyContent="space-between"
-        >
-          {filteredCharacters?.map((character) => (
-            <Grid size={6} key={character.id}>
-              <Card
-                variant="link"
-                url={`/characters/${character.id}`}
-                media={character.image}
-                title={character.name}
-                description={character.species}
-              />
-            </Grid>
-          ))}
-        </Grid>
+        <CharacterList characters={filteredCharacters} size={6} />
       </Stack>
     </PageLayout>
   );

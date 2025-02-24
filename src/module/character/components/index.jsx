@@ -1,3 +1,4 @@
+import CharacterList from "./CharacterList";
 import CharacterSpecifications from "./CharacterSpecifications";
 
-export { CharacterSpecifications };
+export { CharacterList, CharacterSpecifications };
