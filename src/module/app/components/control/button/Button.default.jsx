@@ -1,5 +1,6 @@
 import React from "react";
 
+import PropTypes from "prop-types";
 import { Button as MuiButton } from "@mui/material";
 
 const Button = ({ children, ...props }) => {

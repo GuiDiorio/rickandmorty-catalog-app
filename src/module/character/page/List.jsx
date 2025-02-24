@@ -1,42 +1,43 @@
 import {
-  Button,
   Grid2 as Grid,
-  Menu,
-  MenuItem,
   Stack,
-  Typography,
+  Typography
 } from "@mui/material";
-import React, { useState } from "react";
-import { Card, Icon, PageLayout } from "../../app/components";
+import React, { useEffect, useState } from "react";
+import { ButtonMenu, Card, PageLayout } from "../../app/components";
 
 import { useFetch } from "../../app/hooks";
 import { list } from "../../app/utils/api";
+import { filterCharacters, getAllGenders, getAllSpecies, getAllStatus } from "../utils/filters";
 
 const List = () => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedFilters, setSelectedFilters] = useState([]);
-  console.log(selectedFilters);
+  const [allCharacters, setAllCharacters] = useState([]);
+  const [selectedSpecies, setSelectedSpecies] = useState([]);
+  const [selectedGenders, setSelectedGenders] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState([]);
+
   const {
-    data: allCharacters,
+    data,
     isLoading,
     notFound,
   } = useFetch(() => list("/character"));
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  useEffect(() => {
+    if (data) {
+      setAllCharacters(data);
+    }
+  }, [data]);
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const species = getAllSpecies(allCharacters);
+  const genders = getAllGenders(allCharacters);
+  const status = getAllStatus(allCharacters);
 
-  const handleFilterSelect = (value) => {
-    setSelectedFilters((prev) =>
-      prev.includes(value)
-        ? prev.filter((item) => item !== value)
-        : [...prev, value]
-    );
-  };
+  const filteredCharacters = filterCharacters(
+    allCharacters,
+    selectedSpecies,
+    selectedGenders,
+    selectedStatus
+  );
 
   if (isLoading) return <Typography>Loading...</Typography>;
   if (notFound) return <Typography>Not found</Typography>;
@@ -50,61 +51,32 @@ const List = () => {
           alignItems="center"
         >
           <Typography variant="h1">Characters</Typography>
-          <Stack direction="row" spacing={2}>
+          <Stack direction="row" spacing={2} alignItems="center">
             <Typography variant="body1">Filter By:</Typography>
-            <Button
-              onClick={handleClick}
-              variant="outlined"
-              endIcon={<Icon name="arrowDown" />}
+            <ButtonMenu
+              options={species}
+              selectedOptions={selectedSpecies}
+              setSelectedOptions={setSelectedSpecies}
+              variant="text"
             >
               Species
-            </Button>
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
+            </ButtonMenu>
+            <ButtonMenu
+              options={genders}
+              selectedOptions={selectedGenders}
+              setSelectedOptions={setSelectedGenders}
+              variant="text"
             >
-              <MenuItem
-                onClick={() => handleFilterSelect("Human")}
-                sx={{
-                  bgcolor: selectedFilters.includes("Human")
-                    ? "action.selected"
-                    : "inherit",
-                }}
-              >
-                Human
-              </MenuItem>
-              <MenuItem
-                onClick={() => handleFilterSelect("Alien")}
-                sx={{
-                  bgcolor: selectedFilters.includes("Alien")
-                    ? "action.selected"
-                    : "inherit",
-                }}
-              >
-                Alien
-              </MenuItem>
-              <MenuItem
-                onClick={() => handleFilterSelect("Robot")}
-                sx={{
-                  bgcolor: selectedFilters.includes("Robot")
-                    ? "action.selected"
-                    : "inherit",
-                }}
-              >
-                Robot
-              </MenuItem>
-              <MenuItem
-                onClick={() => handleFilterSelect("Animal")}
-                sx={{
-                  bgcolor: selectedFilters.includes("Animal")
-                    ? "action.selected"
-                    : "inherit",
-                }}
-              >
-                Animal
-              </MenuItem>
-            </Menu>
+              Genders
+            </ButtonMenu>
+            <ButtonMenu
+              options={status}
+              selectedOptions={selectedStatus}
+              setSelectedOptions={setSelectedStatus}
+              variant="text"
+            >
+              Status
+            </ButtonMenu>
           </Stack>
         </Stack>
 
@@ -114,7 +86,7 @@ const List = () => {
           rowSpacing={5}
           justifyContent="space-between"
         >
-          {allCharacters.map((character) => (
+          {filteredCharacters?.map((character) => (
             <Grid size={6} key={character.id}>
               <Card
                 variant="link"
