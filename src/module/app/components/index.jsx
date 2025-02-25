@@ -1,6 +1,6 @@
 import Theme from "./Theme";
+import { Button, ButtonMenu, ButtonPagination } from "./control/button";
 import { Icon } from "./display";
 import { Card, PageLayout } from "./layout";
-import { Button, ButtonMenu } from "./control/button";
 
-export { Button, ButtonMenu, Card, Icon, PageLayout, Theme };
+export { Button, ButtonMenu, ButtonPagination, Card, Icon, PageLayout, Theme };

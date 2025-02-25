@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { Stack, Typography } from "@mui/material";
-import { ButtonMenu, PageLayout } from "../../app/components";
+import { ButtonMenu, ButtonPagination, PageLayout } from "../../app/components";
 
 import { useFetch } from "../../app/hooks";
 import { list } from "../../app/utils/api";
@@ -16,14 +16,31 @@ const List = () => {
   const [allLocations, setAllLocations] = useState([]);
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedDimensions, setSelectedDimensions] = useState([]);
+  const [pageData, setPageData] = useState({
+    page: 1,
+    info: {},
+  });
 
-  const { data, isLoading, notFound } = useFetch(() => list("/location"));
+  const { data, isLoading, notFound, refresh } = useFetch(() =>
+    list("/location", pageData.page)
+  );
 
   useEffect(() => {
     if (data) {
-      setAllLocations(data);
+      setAllLocations(data.results || []);
+      setPageData({ ...pageData, info: data.info });
     }
-  }, [data]);
+  }, [data, pageData.page]);
+
+  useEffect(() => {
+    if (pageData.page) {
+      refresh();
+    }
+  }, [pageData.page]);
+
+  const handlePageChange = (newPage) => {
+    setPageData({ ...pageData, page: newPage });
+  };
 
   const types = getAllTypes(allLocations);
   const dimensions = getAllDimensions(allLocations);
@@ -68,6 +85,10 @@ const List = () => {
         </Stack>
 
         <LocationList locations={filteredLocations} size={6} />
+        <ButtonPagination
+          onRefresh={handlePageChange}
+          pageData={{ currentPage: pageData.page, ...pageData.info }}
+        />
       </Stack>
     </PageLayout>
   );

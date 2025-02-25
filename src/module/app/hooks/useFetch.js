@@ -10,7 +10,7 @@ const useFetch = (request) => {
 
     try {
       const dataRequest = await request();
-      setData(dataRequest?.results || dataRequest);
+      setData(dataRequest);
     } catch (error) {
       console.error(error);
       const status = error?.response?.status;

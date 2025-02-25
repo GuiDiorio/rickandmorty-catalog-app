@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Grid2 as Grid, Container, Box } from "@mui/material";
+import { Container, Grid2 as Grid } from "@mui/material";
 import PropTypes from "prop-types";
 import Header from "./Header";
 
@@ -10,18 +10,24 @@ const PageLayout = ({ children }) => (
       <Header />
     </Grid>
 
-    <Grid size={12} sx={{ 
-      flexGrow: 1,
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column'
-    }}>
-      <Container sx={{ 
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        flexGrow: 1
-      }}>
+    <Grid
+      size={12}
+      sx={{
+        flexGrow: 1,
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <Container
+        sx={{
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          flexGrow: 1,
+          pb: 4,
+        }}
+      >
         {children}
       </Container>
     </Grid>

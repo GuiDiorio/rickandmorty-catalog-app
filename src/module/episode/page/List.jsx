@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { Stack, Typography } from "@mui/material";
-import { ButtonMenu, PageLayout } from "../../app/components";
+import { ButtonMenu, ButtonPagination, PageLayout } from "../../app/components";
 
 import { useFetch } from "../../app/hooks";
 import { list } from "../../app/utils/api";
@@ -11,13 +11,32 @@ import { filterEpisodes, getAllSeasons } from "../utils/filters";
 const List = () => {
   const [allEpisodes, setAllEpisodes] = useState([]);
   const [selectedSeasons, setSelectedSeasons] = useState([]);
-  const { data, isLoading, notFound } = useFetch(() => list("/episode"));
+
+  const [pageData, setPageData] = useState({
+    page: 1,
+    info: {},
+  });
+
+  const { data, isLoading, notFound, refresh } = useFetch(() =>
+    list("/episode", pageData.page)
+  );
 
   useEffect(() => {
     if (data) {
-      setAllEpisodes(data);
+      setAllEpisodes(data.results || []);
+      setPageData({ ...pageData, info: data.info });
     }
-  }, [data]);
+  }, [data, pageData.page]);
+
+  useEffect(() => {
+    if (pageData.page) {
+      refresh();
+    }
+  }, [pageData.page]);
+
+  const handlePageChange = (newPage) => {
+    setPageData({ ...pageData, page: newPage });
+  };
 
   const seasons = getAllSeasons(allEpisodes);
 
@@ -49,6 +68,10 @@ const List = () => {
         </Stack>
 
         <EpisodeList episodes={filteredEpisodes} size={6} />
+        <ButtonPagination
+          onRefresh={handlePageChange}
+          pageData={{ currentPage: pageData.page, ...pageData.info }}
+        />
       </Stack>
     </PageLayout>
   );

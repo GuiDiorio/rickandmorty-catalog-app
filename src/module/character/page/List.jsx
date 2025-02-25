@@ -1,6 +1,6 @@
 import { Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { ButtonMenu, PageLayout } from "../../app/components";
+import { ButtonMenu, ButtonPagination, PageLayout } from "../../app/components";
 
 import { useFetch } from "../../app/hooks";
 import { list } from "../../app/utils/api";
@@ -17,14 +17,31 @@ const List = () => {
   const [selectedSpecies, setSelectedSpecies] = useState([]);
   const [selectedGenders, setSelectedGenders] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState([]);
+  const [pageData, setPageData] = useState({
+    page: 1,
+    info: {},
+  });
 
-  const { data, isLoading, notFound } = useFetch(() => list("/character"));
+  const { data, isLoading, notFound, refresh } = useFetch(() =>
+    list("/character", pageData.page)
+  );
 
   useEffect(() => {
     if (data) {
-      setAllCharacters(data);
+      setAllCharacters(data.results || []);
+      setPageData({ ...pageData, info: data.info });
     }
-  }, [data]);
+  }, [data, pageData.page]);
+
+  useEffect(() => {
+    if (pageData.page) {
+      refresh();
+    }
+  }, [pageData.page]);
+
+  const handlePageChange = (newPage) => {
+    setPageData({ ...pageData, page: newPage });
+  };
 
   const species = getAllSpecies(allCharacters);
   const genders = getAllGenders(allCharacters);
@@ -79,6 +96,11 @@ const List = () => {
         </Stack>
 
         <CharacterList characters={filteredCharacters} size={6} />
+
+        <ButtonPagination
+          onRefresh={handlePageChange}
+          pageData={{ currentPage: pageData.page, ...pageData.info }}
+        />
       </Stack>
     </PageLayout>
   );

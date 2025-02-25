@@ -8,7 +8,13 @@ const Header = ({ children }) => {
   const location = useLocation();
 
   return (
-    <Box width="100%" minHeight="80px" bgcolor="primary.main" py={2}>
+    <Box
+      width="100%"
+      minHeight="80px"
+      bgcolor="primary.main"
+      py={2}
+      sx={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000 }}
+    >
       <Container>
         <Stack
           alignItems="center"

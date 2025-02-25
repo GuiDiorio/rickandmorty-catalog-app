@@ -1,14 +1,15 @@
 import api from "../../../library/api";
 
 /**
- * Fetches a list of items from the specified base URL
+ * Fetches a list of items from the specified base URL with pagination
  * @param {string} baseURL - The base URL endpoint to fetch data from
+ * @param {number} page - The page number to fetch
  * @returns {Promise<any>} The response data from the API
  * @throws {Error} If the API request fails
  */
-const list = async (baseURL) => {
+const list = async (baseURL, page = 1) => {
   try {
-    const response = await api.get(baseURL);
+    const response = await api.get(`${baseURL}?page=${page}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);
