@@ -25,7 +25,8 @@ const PageLayout = ({ children }) => (
           display: "flex",
           flexDirection: "column",
           flexGrow: 1,
-          pb: 4,
+          pt: 12,
+          pb: 6,
         }}
       >
         {children}

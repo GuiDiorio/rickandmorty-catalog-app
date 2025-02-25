@@ -12,8 +12,14 @@ const Header = ({ children }) => {
       width="100%"
       minHeight="80px"
       bgcolor="primary.main"
-      py={2}
-      sx={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000 }}
+      sx={{
+        py: 2,
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1000,
+      }}
     >
       <Container>
         <Stack
