@@ -1,55 +1,47 @@
-import React, { useEffect, useState } from "react";
-
 import { Stack, Typography } from "@mui/material";
-import { ButtonMenu, ButtonPagination, PageLayout } from "../../app/components";
+import React, { useEffect, useState } from "react";
+import { ButtonMenu, PageLayout } from "../../app/components";
 
-import { useFetch } from "../../app/hooks";
+import { useFetch, useFilterParams } from "../../app/hooks";
 import { list } from "../../app/utils/api";
 import { LocationList } from "../components";
-import {
-  filterLocations,
-  getAllDimensions,
-  getAllTypes,
-} from "../utils/filters";
+import { getAllTypes, getAllDimensions } from "../utils/filters";
+import { FILTERS } from "../../app/utils/filters";
 
 const List = () => {
   const [allLocations, setAllLocations] = useState([]);
-  const [selectedTypes, setSelectedTypes] = useState([]);
-  const [selectedDimensions, setSelectedDimensions] = useState([]);
-  const [pageData, setPageData] = useState({
-    page: 1,
-    info: {},
-  });
+  const [locations, setLocations] = useState([]);
+  const [pageData, setPageData] = useState({ page: 1, info: {} });
+
+  const { query, updateParams, areFiltersApplied } = useFilterParams();
 
   const { data, isLoading, notFound, refresh } = useFetch(() =>
-    list("/location", pageData.page)
+    list(`/location?${query}`)
   );
 
   useEffect(() => {
     if (data) {
-      setAllLocations(data.results || []);
-      setPageData({ ...pageData, info: data.info });
-    }
-  }, [data, pageData.page]);
+      setLocations(data.results || []);
+      setPageData((prev) => ({ ...prev, info: data.info }));
 
-  useEffect(() => {
-    if (pageData.page) {
-      refresh();
-    }
-  }, [pageData.page]);
+      const hasFilters = areFiltersApplied(FILTERS.LOCATION);
 
-  const handlePageChange = (newPage) => {
-    setPageData({ ...pageData, page: newPage });
-  };
+      if (!hasFilters) {
+        setAllLocations(data.results || []);
+      }
+    }
+  }, [data]);
 
   const types = getAllTypes(allLocations);
   const dimensions = getAllDimensions(allLocations);
 
-  const filteredLocations = filterLocations(
-    allLocations,
-    selectedTypes,
-    selectedDimensions
-  );
+  useEffect(() => {
+    refresh();
+  }, [query]);
+
+  const handlePageChange = (newPage) => {
+    updateParams("page", [newPage.toString()]);
+  };
 
   if (isLoading) return <Typography>Loading...</Typography>;
   if (notFound) return <Typography>Not found</Typography>;
@@ -65,30 +57,30 @@ const List = () => {
           <Typography variant="h1">Locations</Typography>
           <Stack direction="row" spacing={2} alignItems="center">
             <Typography variant="body1">Filter By:</Typography>
+
             <ButtonMenu
+              label="Type"
               options={types}
-              selectedOptions={selectedTypes}
-              setSelectedOptions={setSelectedTypes}
+              onClickOption={(value) => updateParams("type", value)}
               variant="text"
-            >
-              Types
-            </ButtonMenu>
+            />
+
             <ButtonMenu
+              label="Dimension"
               options={dimensions}
-              selectedOptions={selectedDimensions}
-              setSelectedOptions={setSelectedDimensions}
+              onClickOption={(value) => updateParams("dimension", value)}
               variant="text"
-            >
-              Dimensions
-            </ButtonMenu>
+            />
           </Stack>
         </Stack>
 
-        <LocationList locations={filteredLocations} size={6} />
-        <ButtonPagination
+        <LocationList locations={locations} size={6} />
+
+        {/* Navigation logic will be refactored in the future */}
+        {/* <ButtonPagination
           onRefresh={handlePageChange}
           pageData={{ currentPage: pageData.page, ...pageData.info }}
-        />
+        /> */}
       </Stack>
     </PageLayout>
   );

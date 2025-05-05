@@ -33,21 +33,3 @@ export const getAllStatus = (characters) => {
 
   return [...new Set(status)];
 };
-
-/**
- * Filters characters based on species, genders, and status
- * @param {Array<Object>} characters - Array of character objects
- * @param {Array<string>} species - Array of species to filter by
- * @param {Array<string>} genders - Array of genders to filter by
- * @param {Array<string>} status - Array of statuses to filter by
- * @returns {Array<Object>} Array of filtered characters
- */
-export const filterCharacters = (characters, species, genders, status) => {
-  return characters?.filter((character) => {
-    const matchesSpecies = species.length === 0 || species.includes(character.species);
-    const matchesGender = genders.length === 0 || genders.includes(character.gender);
-    const matchesStatus = status.length === 0 || status.includes(character.status);
-
-    return matchesSpecies && matchesGender && matchesStatus;
-  });
-};

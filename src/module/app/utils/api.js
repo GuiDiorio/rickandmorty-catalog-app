@@ -7,9 +7,9 @@ import api from "../../../library/api";
  * @returns {Promise<any>} The response data from the API
  * @throws {Error} If the API request fails
  */
-const list = async (baseURL, page = 1) => {
+const list = async (query) => {
   try {
-    const response = await api.get(`${baseURL}?page=${page}`);
+    const response = await api.get(query);
     return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);

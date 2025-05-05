@@ -1,20 +1,13 @@
 import React, { useState } from "react";
-
 import PropTypes from "prop-types";
 import { Menu, MenuItem } from "@mui/material";
 import { Icon } from "../../display";
 import { Button } from "./index";
 
-const ButtonMenu = ({ children, options, selectedOptions, setSelectedOptions, ...props }) => {
+const ButtonMenu = ({ label, options, onClickOption, ...props }) => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [selected, setSelected] = useState(null);
 
-  const handleOptionSelect = (value) => {
-    setSelectedOptions((prev) =>
-      prev.includes(value)
-        ? prev.filter((item) => item !== value)
-        : [...prev, value]
-    );
-  };
   const open = Boolean(anchorEl);
 
   const handleOpenMenu = (event) => {
@@ -24,6 +17,13 @@ const ButtonMenu = ({ children, options, selectedOptions, setSelectedOptions, ..
   const handleCloseMenu = () => {
     setAnchorEl(null);
   };
+
+  const handleOptionSelect = (value) => {
+    setSelected(value);
+    onClickOption(value);
+    handleCloseMenu();
+  };
+
   return (
     <>
       <Button
@@ -31,18 +31,14 @@ const ButtonMenu = ({ children, options, selectedOptions, setSelectedOptions, ..
         onClick={handleOpenMenu}
         endIcon={<Icon name="arrowDown" />}
       >
-        {children}
+        {label}: {selected || "All"}
       </Button>
+
       <Menu anchorEl={anchorEl} open={open} onClose={handleCloseMenu}>
         {options.map((option, index) => (
           <MenuItem
             key={`${option}-${index}`}
             onClick={() => handleOptionSelect(option)}
-            sx={{
-              bgcolor: selectedOptions.includes(option)
-                ? "action.selected"
-                : "inherit",
-            }}
           >
             {option}
           </MenuItem>
@@ -53,7 +49,7 @@ const ButtonMenu = ({ children, options, selectedOptions, setSelectedOptions, ..
 };
 
 ButtonMenu.propTypes = {
-  children: PropTypes.node,
+  label: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
   onClickOption: PropTypes.func.isRequired,
 };

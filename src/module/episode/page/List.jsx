@@ -1,46 +1,46 @@
-import React, { useEffect, useState } from "react";
-
 import { Stack, Typography } from "@mui/material";
-import { ButtonMenu, ButtonPagination, PageLayout } from "../../app/components";
+import React, { useEffect, useState } from "react";
+import { ButtonMenu, PageLayout } from "../../app/components";
 
-import { useFetch } from "../../app/hooks";
+import { useFetch, useFilterParams } from "../../app/hooks";
 import { list } from "../../app/utils/api";
 import { EpisodeList } from "../components";
-import { filterEpisodes, getAllSeasons } from "../utils/filters";
+import { getAllSeasons } from "../utils/filters";
+import { FILTERS } from "../../app/utils/filters";
 
 const List = () => {
   const [allEpisodes, setAllEpisodes] = useState([]);
-  const [selectedSeasons, setSelectedSeasons] = useState([]);
+  const [episodes, setEpisodes] = useState([]);
+  const [pageData, setPageData] = useState({ page: 1, info: {} });
 
-  const [pageData, setPageData] = useState({
-    page: 1,
-    info: {},
-  });
+  const { query, updateParams, areFiltersApplied } = useFilterParams();
 
   const { data, isLoading, notFound, refresh } = useFetch(() =>
-    list("/episode", pageData.page)
+    list(`/episode?${query}`)
   );
 
   useEffect(() => {
     if (data) {
-      setAllEpisodes(data.results || []);
-      setPageData({ ...pageData, info: data.info });
-    }
-  }, [data, pageData.page]);
+      setEpisodes(data.results || []);
+      setPageData((prev) => ({ ...prev, info: data.info }));
 
-  useEffect(() => {
-    if (pageData.page) {
-      refresh();
-    }
-  }, [pageData.page]);
+      const hasFilters = areFiltersApplied(FILTERS.EPISODE);
 
-  const handlePageChange = (newPage) => {
-    setPageData({ ...pageData, page: newPage });
-  };
+      if (!hasFilters) {
+        setAllEpisodes(data.results || []);
+      }
+    }
+  }, [data]);
 
   const seasons = getAllSeasons(allEpisodes);
 
-  const filteredEpisodes = filterEpisodes(allEpisodes, selectedSeasons);
+  useEffect(() => {
+    refresh();
+  }, [query]);
+
+  const handlePageChange = (newPage) => {
+    updateParams("page", [newPage.toString()]);
+  };
 
   if (isLoading) return <Typography>Loading...</Typography>;
   if (notFound) return <Typography>Not found</Typography>;
@@ -56,22 +56,23 @@ const List = () => {
           <Typography variant="h1">Episodes</Typography>
           <Stack direction="row" spacing={2} alignItems="center">
             <Typography variant="body1">Filter By:</Typography>
+
             <ButtonMenu
-              variant="text"
+              label="Season"
               options={seasons}
-              selectedOptions={selectedSeasons}
-              setSelectedOptions={setSelectedSeasons}
-            >
-              Seasons
-            </ButtonMenu>
+              onClickOption={(value) => updateParams("season", value)}
+              variant="text"
+            />
           </Stack>
         </Stack>
 
-        <EpisodeList episodes={filteredEpisodes} size={6} />
-        <ButtonPagination
+        <EpisodeList episodes={episodes} size={6} />
+
+        {/* Navigation logic will be refactored in the future */}
+        {/* <ButtonPagination
           onRefresh={handlePageChange}
           pageData={{ currentPage: pageData.page, ...pageData.info }}
-        />
+        /> */}
       </Stack>
     </PageLayout>
   );
