@@ -2,7 +2,7 @@ import { Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { ButtonMenu, PageLayout } from "../../app/components";
 
-import { useFetch, useFilterParams } from "../../app/hooks";
+import { useFetch, useQuery } from "../../app/hooks";
 import { list } from "../../app/utils/api";
 import { LocationList } from "../components";
 import { getAllTypes, getAllDimensions } from "../utils/filters";
@@ -13,7 +13,7 @@ const List = () => {
   const [locations, setLocations] = useState([]);
   const [pageData, setPageData] = useState({ page: 1, info: {} });
 
-  const { query, updateParams, areFiltersApplied } = useFilterParams();
+  const { query, updateQueryParams, areFiltersApplied } = useQuery();
 
   const { data, isLoading, notFound, refresh } = useFetch(() =>
     list(`/location?${query}`)
@@ -40,7 +40,7 @@ const List = () => {
   }, [query]);
 
   const handlePageChange = (newPage) => {
-    updateParams("page", [newPage.toString()]);
+    updateQueryParams("page", [newPage.toString()]);
   };
 
   if (isLoading) return <Typography>Loading...</Typography>;
@@ -61,14 +61,14 @@ const List = () => {
             <ButtonMenu
               label="Type"
               options={types}
-              onClickOption={(value) => updateParams("type", value)}
+              onClickOption={(value) => updateQueryParams("type", value)}
               variant="text"
             />
 
             <ButtonMenu
               label="Dimension"
               options={dimensions}
-              onClickOption={(value) => updateParams("dimension", value)}
+              onClickOption={(value) => updateQueryParams("dimension", value)}
               variant="text"
             />
           </Stack>

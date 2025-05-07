@@ -1,4 +1,4 @@
 import useFetch from "./useFetch";
-import useFilterParams from "./useFilterParams";
+import useQuery from "./useQuery";
 
-export { useFetch, useFilterParams };
+export { useFetch, useQuery };

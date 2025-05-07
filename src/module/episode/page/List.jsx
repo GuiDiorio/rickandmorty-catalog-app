@@ -2,7 +2,7 @@ import { Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { ButtonMenu, PageLayout } from "../../app/components";
 
-import { useFetch, useFilterParams } from "../../app/hooks";
+import { useFetch, useQuery } from "../../app/hooks";
 import { list } from "../../app/utils/api";
 import { EpisodeList } from "../components";
 import { getAllSeasons } from "../utils/filters";
@@ -13,7 +13,7 @@ const List = () => {
   const [episodes, setEpisodes] = useState([]);
   const [pageData, setPageData] = useState({ page: 1, info: {} });
 
-  const { query, updateParams, areFiltersApplied } = useFilterParams();
+  const { query, updateQueryParams, areFiltersApplied } = useQuery();
 
   const { data, isLoading, notFound, refresh } = useFetch(() =>
     list(`/episode?${query}`)
@@ -39,7 +39,7 @@ const List = () => {
   }, [query]);
 
   const handlePageChange = (newPage) => {
-    updateParams("page", [newPage.toString()]);
+    updateQueryParams("page", [newPage.toString()]);
   };
 
   if (isLoading) return <Typography>Loading...</Typography>;
@@ -60,7 +60,7 @@ const List = () => {
             <ButtonMenu
               label="Season"
               options={seasons}
-              onClickOption={(value) => updateParams("season", value)}
+              onClickOption={(value) => updateQueryParams("season", value)}
               variant="text"
             />
           </Stack>

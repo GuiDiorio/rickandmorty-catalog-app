@@ -2,7 +2,7 @@ import { Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { ButtonMenu, PageLayout } from "../../app/components";
 
-import { useFetch, useFilterParams } from "../../app/hooks";
+import { useFetch, useQuery } from "../../app/hooks";
 import { list } from "../../app/utils/api";
 import { CharacterList } from "../components";
 import { getAllGenders, getAllSpecies, getAllStatus } from "../utils/filters";
@@ -14,7 +14,7 @@ const List = () => {
   const [characters, setCharacters] = useState([]);
   const [pageData, setPageData] = useState({ page: 1, info: {} });
 
-  const { query, updateParams, areFiltersApplied } = useFilterParams();
+  const { query, updateQueryParams, areFiltersApplied } = useQuery();
 
   const { data, isLoading, notFound, refresh } = useFetch(() =>
     list(`/character?${query}`)
@@ -42,7 +42,7 @@ const List = () => {
   }, [query]);
 
   const handlePageChange = (newPage) => {
-    updateParams("page", [newPage.toString()]);
+    updateQueryParams("page", [newPage.toString()]);
   };
 
   if (isLoading) return <Typography>Loading...</Typography>;
@@ -63,21 +63,21 @@ const List = () => {
             <ButtonMenu
               label="Species"
               options={species}
-              onClickOption={(value) => updateParams("species", value)}
+              onClickOption={(value) => updateQueryParams("species", value)}
               variant="text"
             />
 
             <ButtonMenu
               label="Gender"
               options={genders}
-              onClickOption={(value) => updateParams("gender", value)}
+              onClickOption={(value) => updateQueryParams("gender", value)}
               variant="text"
             />
 
             <ButtonMenu
               label="Status"
               options={status}
-              onClickOption={(value) => updateParams("status", value)}
+              onClickOption={(value) => updateQueryParams("status", value)}
               variant="text"
             />
           </Stack>
