@@ -1,19 +1,17 @@
 import { Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { ButtonMenu, PageLayout } from "../../app/components";
+import { ButtonMenu, PageLayout, Pagination } from "../../app/components";
 
 import { useFetch, useQuery } from "../../app/hooks";
 import { list } from "../../app/utils/api";
 import { LocationList } from "../components";
-import { getAllTypes, getAllDimensions } from "../utils/filters";
 import { FILTERS } from "../../app/utils/filters";
 
 const List = () => {
-  const [allLocations, setAllLocations] = useState([]);
   const [locations, setLocations] = useState([]);
-  const [pageData, setPageData] = useState({ page: 1, info: {} });
 
-  const { query, updateQueryParams, areFiltersApplied } = useQuery();
+  const { query, updateQueryParams, pageInfo, setPageInfo, getCurrentPage } =
+    useQuery();
 
   const { data, isLoading, notFound, refresh } = useFetch(() =>
     list(`/location?${query}`)
@@ -22,26 +20,17 @@ const List = () => {
   useEffect(() => {
     if (data) {
       setLocations(data.results || []);
-      setPageData((prev) => ({ ...prev, info: data.info }));
 
-      const hasFilters = areFiltersApplied(FILTERS.LOCATION);
-
-      if (!hasFilters) {
-        setAllLocations(data.results || []);
-      }
+      setPageInfo({
+        pages: data.info.pages,
+        current: getCurrentPage(),
+      });
     }
   }, [data]);
-
-  const types = getAllTypes(allLocations);
-  const dimensions = getAllDimensions(allLocations);
 
   useEffect(() => {
     refresh();
   }, [query]);
-
-  const handlePageChange = (newPage) => {
-    updateQueryParams("page", [newPage.toString()]);
-  };
 
   if (isLoading) return <Typography>Loading...</Typography>;
   if (notFound) return <Typography>Not found</Typography>;
@@ -60,14 +49,14 @@ const List = () => {
 
             <ButtonMenu
               label="Type"
-              options={types}
+              options={FILTERS.LOCATION.type}
               onClickOption={(value) => updateQueryParams("type", value)}
               variant="text"
             />
 
             <ButtonMenu
               label="Dimension"
-              options={dimensions}
+              options={FILTERS.LOCATION.dimension}
               onClickOption={(value) => updateQueryParams("dimension", value)}
               variant="text"
             />
@@ -76,11 +65,11 @@ const List = () => {
 
         <LocationList locations={locations} size={6} />
 
-        {/* Navigation logic will be refactored in the future */}
-        {/* <ButtonPagination
-          onRefresh={handlePageChange}
-          pageData={{ currentPage: pageData.page, ...pageData.info }}
-        /> */}
+        <Pagination
+          count={pageInfo.pages}
+          page={pageInfo.current}
+          onChange={(event, value) => updateQueryParams("page", value)}
+        />
       </Stack>
     </PageLayout>
   );

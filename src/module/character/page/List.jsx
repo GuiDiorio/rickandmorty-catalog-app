@@ -1,20 +1,17 @@
 import { Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { ButtonMenu, PageLayout } from "../../app/components";
+import { ButtonMenu, PageLayout, Pagination } from "../../app/components";
 
 import { useFetch, useQuery } from "../../app/hooks";
 import { list } from "../../app/utils/api";
 import { CharacterList } from "../components";
-import { getAllGenders, getAllSpecies, getAllStatus } from "../utils/filters";
-
 import { FILTERS } from "../../app/utils/filters";
 
 const List = () => {
-  const [allCharacters, setAllCharacters] = useState([]);
   const [characters, setCharacters] = useState([]);
-  const [pageData, setPageData] = useState({ page: 1, info: {} });
 
-  const { query, updateQueryParams, areFiltersApplied } = useQuery();
+  const { query, updateQueryParams, pageInfo, setPageInfo, getCurrentPage } =
+    useQuery();
 
   const { data, isLoading, notFound, refresh } = useFetch(() =>
     list(`/character?${query}`)
@@ -23,27 +20,17 @@ const List = () => {
   useEffect(() => {
     if (data) {
       setCharacters(data.results || []);
-      setPageData((prev) => ({ ...prev, info: data.info }));
 
-      const hasFilters = areFiltersApplied(FILTERS.CHARACTER);
-
-      if (!hasFilters) {
-        setAllCharacters(data.results || []);
-      }
+      setPageInfo({
+        pages: data.info.pages,
+        current: getCurrentPage(),
+      });
     }
   }, [data]);
-
-  const species = getAllSpecies(allCharacters);
-  const genders = getAllGenders(allCharacters);
-  const status = getAllStatus(allCharacters);
 
   useEffect(() => {
     refresh();
   }, [query]);
-
-  const handlePageChange = (newPage) => {
-    updateQueryParams("page", [newPage.toString()]);
-  };
 
   if (isLoading) return <Typography>Loading...</Typography>;
   if (notFound) return <Typography>Not found</Typography>;
@@ -62,21 +49,19 @@ const List = () => {
 
             <ButtonMenu
               label="Species"
-              options={species}
+              options={FILTERS.CHARACTER.species}
               onClickOption={(value) => updateQueryParams("species", value)}
               variant="text"
             />
-
             <ButtonMenu
               label="Gender"
-              options={genders}
+              options={FILTERS.CHARACTER.gender}
               onClickOption={(value) => updateQueryParams("gender", value)}
               variant="text"
             />
-
             <ButtonMenu
               label="Status"
-              options={status}
+              options={FILTERS.CHARACTER.status}
               onClickOption={(value) => updateQueryParams("status", value)}
               variant="text"
             />
@@ -85,10 +70,11 @@ const List = () => {
 
         <CharacterList characters={characters} size={6} />
 
-        {/* <ButtonPagination
-          onRefresh={handlePageChange}
-          pageData={{ currentPage: pageData.page, ...pageData.info }}
-        /> */}
+        <Pagination
+          count={pageInfo.pages}
+          page={pageInfo.current}
+          onChange={(event, value) => updateQueryParams("page", value)}
+        />
       </Stack>
     </PageLayout>
   );
